@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "exclidraw-main",
   "private": true,
   "scripts": {
     "build": "turbo build",
