@@ -100,3 +100,6 @@ export default function Home() {
     </div>
   );
 }
+
+
+//npx kill-port 8080 --- use this command in the terminal opened as administrator to kill the app running on the port
