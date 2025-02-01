@@ -1,23 +1,58 @@
-# Turborepo starter
+# Getting Started
 
-This Turborepo starter is maintained by the Turborepo core team.
+This repo uses the pnpm package manager so make sure you have the pnpm package manager installed.
 
-## Using this example
+## Commands
 
-Run the following command:
+To setup the database in docker run these commands:
+
+### Run postgres container locally
 
 ```sh
-npx create-turbo@latest
+docker run \-e POSTGRES_PASSWORD=mysecretpassword \-p 5432:5432 \-d postgres
 ```
+
+### Get the process id
+
+```sh
+docker ps
+```
+
+### ssh inside the container
+
+```sh
+docker exec \-it < process-id >
+```
+
+### Now switch to the postgres user
+
+```sh
+psql \-U postgres
+```
+
+## To run all different services locally
+
+On windows monorepo is a bit tricky to stop. So I suggent not to run:
+
+```sh
+npm run dev
+```
+
+## Do this instead
+
+- Go to all the differnet services.
+- Try running them saperately on different terminals
+- To stop you can just do `ctrl+c`
 
 ## What's inside?
 
 This Turborepo includes the following packages/apps:
 
-### Apps and Packages
+### Steps
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
+<!-- - `docs`: a [Next.js](https://nextjs.org/) app -->
+
+- Do a global pnpm install
 - `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
