@@ -2,28 +2,75 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken"
 import { JWT_SECRET } from "@repo/backend-common/config";
 import { CreateRoomSchema, CreateUserSchema, SigninSchema } from "@repo/common/types";
+import { prismaClient } from "@repo/db/client"
 
-export const Signup = (req: Request, res: Response) => {
-    const data = CreateUserSchema.safeParse(req.body);
-    if (!data.success) {
+export const Signup = async (req: Request, res: Response) => {
+    const parsedData = CreateUserSchema.safeParse(req.body);
+    if (!parsedData.success) {
+        console.log("error: ", parsedData.error)
         res.json({
             message: "Invalid inputs"
         })
         return
     }
-    //db-call
-    res.json({
-        userId: 123
-    })
+
+    const { username, name, password } = parsedData.data
+    try {
+        const user = await prismaClient.user.create({
+            data: {
+                email: username,
+                name,
+                password,
+            }
+        })
+        res.json({
+            userId: user.id
+        })
+    } catch (err) {
+        res.status(411).json({
+            message: "User already exists"
+        })
+    }
 }
 
-export const Signin = (req: Request, res: Response) => {
-    const data = SigninSchema.safeParse(req.body);
-    if (!data.success) {
+export const Signin = async (req: Request, res: Response) => {
+    const parsedData = SigninSchema.safeParse(req.body);
+    if (!parsedData.success) {
+        console.log("error: ", parsedData.error)
         res.json({
             message: "Invalid inputs"
         })
         return
+    }
+
+    const { username, password } = parsedData.data
+
+    try {
+        const user = await prismaClient.user.findFirst({
+            where: {
+                email: username,
+                password
+            }
+        })
+
+        if (!user) {
+            res.status(403).json({
+                message: "Not authorized"
+            })
+            return
+        }
+
+        const token = jwt.sign({ userId: user?.id }, JWT_SECRET)
+
+        res.json({
+            token
+        })
+        return
+
+    } catch (err) {
+        res.json({
+            message: "something went wrong in the signin controller"
+        })
     }
     const userId = 1;
     const token = jwt.sign({
@@ -32,16 +79,31 @@ export const Signin = (req: Request, res: Response) => {
 
     res.json(token)
 }
-export const Room = (req: Request, res: Response) => {
-    const data = CreateRoomSchema.safeParse(req.body);
-    if (!data.success) {
+export const Room = async (req: Request, res: Response) => {
+    const parsedData = CreateRoomSchema.safeParse(req.body);
+    if (!parsedData.success) {
+        console.log("error: ",parsedData.error)
         res.json({
             message: "Invalid inputs"
         })
         return
     }
-    //db-call
-    res.json({
-        roomId: 123
-    })
+    try {
+
+        const userId = req.userId
+        const { name } = parsedData.data;
+        const room = await prismaClient.room.create({
+            data: {
+                slug: name,
+                adminId: userId
+            }
+        })
+        res.json({
+            roomId: room.id
+        })
+    } catch (err) {
+        res.json({
+            message: "something went wrong in the room controller"
+        })
+    }
 }
