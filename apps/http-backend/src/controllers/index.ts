@@ -76,7 +76,7 @@ export const Signin = async (req: Request, res: Response) => {
 export const Room = async (req: Request, res: Response) => {
     const parsedData = CreateRoomSchema.safeParse(req.body);
     if (!parsedData.success) {
-        console.log("error: ",parsedData.error)
+        console.log("error: ", parsedData.error)
         res.json({
             message: "Invalid inputs"
         })
@@ -100,4 +100,23 @@ export const Room = async (req: Request, res: Response) => {
             message: "something went wrong in the room controller"
         })
     }
+}
+
+
+export const getAllMessages = async (req: Request, res: Response) => {
+    const roomId = Number(req.params.roomId);
+
+    const messages = await prismaClient.chat.findMany({
+        where: {
+            roomId
+        },
+        orderBy: {
+            id: "desc"
+        },
+        take: 50
+    })
+
+    res.json({
+        messages
+    })
 }
