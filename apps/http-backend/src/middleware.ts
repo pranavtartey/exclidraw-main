@@ -5,9 +5,9 @@ import { JWT_SECRET } from "@repo/backend-common/config";
 export const middleware = (req: Request, res: Response, next: NextFunction) => {
 
     const token = req.headers["authorization"] ?? ""
+try{
 
     const decoded = jwt.verify(token, JWT_SECRET)
-
     if (decoded) {
         req.userId = (decoded as JwtPayload).userId;
         next()
@@ -16,6 +16,12 @@ export const middleware = (req: Request, res: Response, next: NextFunction) => {
             message: "Unauthorized"
         })
     }
+}catch(err){
+    res.status(403).json({
+        message : "something went wrong in the middleware"
+    })
+}
+
 
 }
 

@@ -72,12 +72,6 @@ export const Signin = async (req: Request, res: Response) => {
             message: "something went wrong in the signin controller"
         })
     }
-    const userId = 1;
-    const token = jwt.sign({
-        userId
-    }, JWT_SECRET)
-
-    res.json(token)
 }
 export const Room = async (req: Request, res: Response) => {
     const parsedData = CreateRoomSchema.safeParse(req.body);
