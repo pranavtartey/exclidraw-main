@@ -120,3 +120,16 @@ export const getAllMessages = async (req: Request, res: Response) => {
         messages
     })
 }
+export const roomDetails = async (req: Request, res: Response) => {
+    const slug = (req.params.slug);
+
+    const room = await prismaClient.room.findFirst({
+        where: {
+            slug
+        },
+    })
+
+    res.json({
+        room
+    })
+}
