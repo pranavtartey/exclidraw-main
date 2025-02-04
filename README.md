@@ -1,6 +1,6 @@
 # Getting Started
 
-This repo uses the pnpm package manager so make sure you have the pnpm package manager installed.
+This repo uses the `pnpm` package manager so make sure you have the `pnpm` package manager installed.
 
 ## Commands
 
@@ -28,6 +28,24 @@ docker exec -it < process-id >
 
 ```sh
 psql -U postgres
+```
+
+### Setup dependencies
+- Open new terminal
+- `cd` into the `exclidraw-main` repo.
+
+```sh
+pnpm install
+```
+
+### Setup database
+
+- Open new terminal
+- `cd` into the `packages/db` directory in the `exclidraw-main` app
+- Run the following command
+
+```sh
+npx prisma migrate dev
 ```
 
 ## To run all different services locally
