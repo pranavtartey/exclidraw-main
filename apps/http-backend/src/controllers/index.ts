@@ -105,20 +105,24 @@ export const Room = async (req: Request, res: Response) => {
 
 export const getAllMessages = async (req: Request, res: Response) => {
     const roomId = Number(req.params.roomId);
+    try {
+        console.log("This is the roomId from the frontend : ", roomId)
+        const messages = await prismaClient.chat.findMany({
+            where: {
+                roomId
+            },
+            orderBy: {
+                id: "desc"
+            },
+            take: 50
+        })
 
-    const messages = await prismaClient.chat.findMany({
-        where: {
-            roomId
-        },
-        orderBy: {
-            id: "desc"
-        },
-        take: 50
-    })
-
-    res.json({
-        messages
-    })
+        res.json({
+            messages
+        })
+    } catch (e) {
+        res.json({ message: "something webt wrong in the getAllMessages controller" })
+    }
 }
 export const roomDetails = async (req: Request, res: Response) => {
     const slug = (req.params.slug);
