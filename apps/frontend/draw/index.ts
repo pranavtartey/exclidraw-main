@@ -1,7 +1,5 @@
-// import { GetExisitingShapes } from "@/app/canvas/[roomid]/page";
 import { HTTP_BACKEND } from "@/config";
 import axios from "axios";
-import { stringify } from "querystring";
 
 type Shape = {
     type: "rect",
@@ -14,6 +12,12 @@ type Shape = {
     centerX: number,
     centerY: number,
     radius: number
+} | {
+    type: "line",
+    startX: number,
+    startY: number,
+    exdX: number,
+    endY: number
 }
 
 
@@ -53,13 +57,33 @@ const Draw = async (canvas: HTMLCanvasElement, roomId: string, socket: WebSocket
         clicked = false;
         const width = e.clientX - startX
         const height = e.clientY - startY
-        const shape: Shape = {
-            type: "rect",
-            x: startX,
-            y: startY,
-            height,
-            width
+        //@ts-ignore
+        const selectedTool = window.selectedTool;
+        let shape: Shape | null = null;
+        if (selectedTool === "rect") {
+            shape = {
+                //@ts-ignore
+                type: "rect",
+                x: startX,
+                y: startY,
+                height,
+                width
+            }
+        } else if (selectedTool === "circle") {
+            const radius = Math.max(width, height) / 2
+            shape = {
+                //@ts-ignore
+                type: "circle",
+                radius,
+                centerX: startX + radius,
+                centerY: startY + radius,
+            }
         }
+
+        if (!shape) {
+            return;
+        }
+
         existingShapes.push(shape)
 
         socket.send(JSON.stringify({
@@ -79,7 +103,19 @@ const Draw = async (canvas: HTMLCanvasElement, roomId: string, socket: WebSocket
             const height = e.clientY - startY;
             ClearCanvas(existingShapes, canvas, ctx)
             ctx.strokeStyle = "rgba(255,255,255)";
-            ctx.strokeRect(startX, startY, width, height);
+            //@ts-ignore
+            const selectedTool = window.selectedTool
+            if (selectedTool === "rect") {
+                ctx.strokeRect(startX, startY, width, height);
+            } else if (selectedTool === "circle") {
+                const centerX = startX + width / 2
+                const centerY = startY + height / 2
+                const radius = Math.max(width, height) / 2
+                ctx.beginPath()
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2)
+                ctx.stroke()
+                ctx.closePath()
+            }
 
             console.log(e.clientX);
             console.log(e.clientY);
@@ -95,6 +131,11 @@ const ClearCanvas = (existingShapes: Shape[], canvas: HTMLCanvasElement, ctx: Ca
         if (shape.type === "rect") {
             ctx.strokeStyle = "rgba(255,255,255)"
             ctx.strokeRect(shape.x, shape.y, shape.width, shape.height)
+        } else if (shape.type === "circle") {
+            ctx.beginPath()
+            ctx.arc(shape.centerX, shape.centerY, shape.radius, 0, Math.PI * 2)
+            ctx.stroke()
+            ctx.closePath()
         }
     })
 }

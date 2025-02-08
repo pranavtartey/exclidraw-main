@@ -3,8 +3,9 @@ import Draw from "@/draw";
 import { useEffect, useRef, useState } from "react";
 import IconButton from "./IconButton";
 import { IconCircle, IconLine, IconRectangle } from "@tabler/icons-react";
+import { Game } from "@/draw/Game";
 
-type Shape = "circle" | "rect" | "line";
+export type Tool = "circle" | "rect" | "line";
 
 export function Canvas({
   roomId,
@@ -14,14 +15,20 @@ export function Canvas({
   socket: WebSocket;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const [selectedTool, setSelectedTool] = useState<Shape>("circle");
+  const [game, setGame] = useState<Game>();
+  const [selectedTool, setSelectedTool] = useState<Tool>("circle");
 
   useEffect(() => {
     if (canvasRef.current) {
-      Draw(canvasRef.current, roomId, socket);
+      const g = new Game(canvasRef.current, roomId, socket);
+      setGame(g);
+
+      return () => {
+        g.destroy();
+      };
     }
   }, [canvasRef]);
+  
   return (
     <div className="relative h-[100dvh] overflow-hidden">
       <canvas
@@ -39,8 +46,8 @@ const TopBar = ({
   selectedTool,
   setSelectedTool,
 }: {
-  selectedTool: Shape;
-  setSelectedTool: (s: Shape) => void;
+  selectedTool: Tool;
+  setSelectedTool: (s: Tool) => void;
 }) => {
   return (
     <div className="fixed flex justify-center items-center gap-2 top-10 left-1/2 p-2 -translate-x-1/2 bg-neutral-700 rounded-lg">
