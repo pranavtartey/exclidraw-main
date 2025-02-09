@@ -1,11 +1,11 @@
 "use client";
-import { NavLinks } from "@/constants/NavLinks";
-import Link from "next/link";
+import { NavLinks } from "@repo/constants/navlinks";
 import { FC, useState } from "react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
 
-const Navbar: FC = () => {
+const Navbar = () => {
   const [clicked, setClicked] = useState<boolean>(false);
 
   return (
