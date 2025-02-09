@@ -45,6 +45,14 @@ pnpm install
 - Run the following command
 
 ```sh
+cd packages/db
+```
+
+```sh
+cp .env.example .env
+```
+
+```sh
 npx prisma migrate dev
 ```
 
@@ -64,3 +72,7 @@ npm run dev
 
 > [!TIP]
 > If you happen to start the project by running `npm run dev` directly then to stop the processes use `npx kill-port <8080>` --- in terminal opened as administrator to kill the app running on the port.
+
+```sh
+npx kill-port 3000 3001 8080 
+```
