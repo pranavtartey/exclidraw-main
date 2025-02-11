@@ -9,7 +9,7 @@ const Navbar = () => {
   const [clicked, setClicked] = useState<boolean>(false);
 
   return (
-    <div className="border border-neutral-500 rounded-lg px-4 py-1 shadow-[0_1px_14px_#DDD] bg-black/30 backdrop-blur-md">
+    <div className="border border-neutral-500 rounded-lg px-4 py-2 shadow-[0_1px_14px_#DDD] bg-black/30 backdrop-blur-md">
       <div className="flex items-center justify-between">
         <svg width="80" height="40" fill="none" viewBox="0 0 176 40">
           <path
@@ -24,13 +24,13 @@ const Navbar = () => {
           ></path>
         </svg>
 
-        <div>
+        <div className="flex items-center justify-center gap-4">
           <div className="max-sm:hidden">
             {NavLinks.map(({ title, href }) => (
               <Link
                 key={title}
                 href={href}
-                className="text-neutral-300 hover:text-white transition font-medium m-2 first:ml-0 last:mr-0"
+                className="text-neutral-300 hover:text-white transition tracking-wide font-medium m-2 first:ml-0 last:mr-0"
               >
                 {title}
               </Link>
@@ -49,11 +49,14 @@ const Navbar = () => {
             )}
           </div>
         </div>
+        <button className="max-sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition">
+          Sign up
+        </button>
       </div>
       <AnimatePresence>
         {clicked && (
           <motion.div
-            className=""
+            className="sm:hidden"
             initial={{
               opacity: 0,
               height: 0,
@@ -77,11 +80,16 @@ const Navbar = () => {
               <Link
                 key={title}
                 href={href}
-                className="text-neutral-300 hover:text-white transition font-medium tracking-wider block text-center my-2 first:mt-0 last:mb-0"
+                className="sm:hidden text-neutral-300 hover:text-white transition font-medium tracking-wider block text-center my-2 first:mt-0 last:mb-0"
               >
                 {title}
               </Link>
             ))}
+            <div>
+              <button className="sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition mx-auto block">
+                Sign up
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
