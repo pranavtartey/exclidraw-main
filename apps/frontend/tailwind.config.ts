@@ -32,7 +32,7 @@ const config: Config = {
         }
       },
       colors: {
-
+        textBlack : "#1d1d1f"
       },
     },
   },
