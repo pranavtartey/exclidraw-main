@@ -90,7 +90,7 @@ npm run dev
 - Try running them saperately on different terminals
 - To stop you can just do `ctrl+c`
 
-> [!TIP]
+> [!WARNING]
 > If you happen to start the project by running `npm run dev` directly then to stop the processes use `npx kill-port <8080>` --- in terminal opened as administrator to kill the app running on the port.
 
 ```sh
