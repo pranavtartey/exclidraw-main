@@ -6,7 +6,10 @@
     .section-heading {
         @apply text-white text-5xl sm:text-6xl text-center font-medium bg-gradient-to-b from-white to-neutral-700 text-transparent bg-clip-text
     }
-    .section-description {
+    .section-description-short {
         @apply sm:text-lg text-neutral-300 text-center tracking-wide max-w-sm mx-auto
+    }
+    .section-description {
+        @apply sm:text-lg text-neutral-300 text-center tracking-wide max-w-lg mx-auto
     }
 }
