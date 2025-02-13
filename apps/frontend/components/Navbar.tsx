@@ -1,7 +1,12 @@
 "use client";
 import { NavLinks } from "@repo/constants/navlinks";
-import { useState } from "react";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import {
+  IconChalkboard,
+  IconLogout,
+  IconMenu2,
+  IconX,
+} from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,6 +14,17 @@ import { useRouter } from "next/navigation";
 const Navbar = () => {
   const [clicked, setClicked] = useState<boolean>(false);
   const router = useRouter();
+
+  const [token, setToken] = useState(
+    () => localStorage.getItem("authorization") || ""
+  );
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("authorization");
+    if (storedToken && storedToken !== token) {
+      setToken(storedToken);
+    }
+  }, [token]);
   return (
     <div className="border border-neutral-500 rounded-lg px-4 py-2 shadow-[0_1px_14px_#DDD] bg-black/30 backdrop-blur-md">
       <div className="flex items-center justify-between">
@@ -50,11 +66,31 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        <button className="max-sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition" onClick={() => {
-                  router.push("/signup");
-                }}>
-          Sign up
-        </button>
+        {!token ? (
+          <button
+            className="max-sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition"
+            onClick={() => {
+              router.push("/signup");
+            }}
+          >
+            Sign up
+          </button>
+        ) : (
+          <div className="max-sm:hidden">
+            <button className="">
+              <IconChalkboard color="#d4d4d4" />
+            </button>
+            <button
+              className="py-2 px-4 rounded-lg hover:bg-rose-800 transition"
+              onClick={() => {
+                localStorage.removeItem("authorization");
+                setToken("");
+              }}
+            >
+              <IconLogout color="#e11d48" />
+            </button>
+          </div>
+        )}
       </div>
       <AnimatePresence>
         {clicked && (
@@ -88,16 +124,31 @@ const Navbar = () => {
                 {title}
               </Link>
             ))}
-            <div>
+            {!token ? (
               <button
-                className="sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition mx-auto block"
-                onClick={() => {
-                  router.push("/signup");
-                }}
-              >
-                Sign up
-              </button>
-            </div>
+              className="sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition mx-auto block"
+              onClick={() => {
+                router.push("/signup");
+              }}
+            >
+              Sign up
+            </button>
+            ) : (
+              <div className="w-fit mx-auto flex gap-4">
+                <button>
+                  <IconChalkboard color="#d4d4d4" />
+                </button>
+                <button
+                  className=""
+                  onClick={() => {
+                    localStorage.removeItem("authorization");
+                    setToken("");
+                  }}
+                >
+                  <IconLogout color="#e11d48" />
+                </button>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

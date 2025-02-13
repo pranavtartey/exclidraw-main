@@ -155,17 +155,12 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
               Cancel
             </button>
           </div>
-          {/* <p className="text-center text-neutral-300">OR</p> */}
           <hr />
           <div className="">
             <button className="hover:bg-neutral-300 rounded-full py-1 w-full mt-4 inline-flex justify-center items-center gap-4 px-4 text-neutral-300 bg-black border hover:text-black transition font-medium">
               <Image src={google} alt="google-logo-image" className="w-6" />{" "}
               <span>Signin with Google</span>
             </button>
-            {/* <button className="hover:bg-neutral-300 rounded-full py-1 w-full mt-4 inline-flex justify-center items-center gap-4 px-4 text-neutral-300 bg-black border hover:text-black transition">
-              <Image src={google} alt="google-logo-image" className="w-6" />{" "}
-              <span>Signin with Google</span>
-            </button> */}
           </div>
         </div>
       </div>
