@@ -3,15 +3,38 @@ import google from "@/assets/google-signin.png";
 // import github from "@/assets/github-signin.png";
 import { IconUserEdit, IconPassword, IconSignature } from "@tabler/icons-react";
 import Image from "next/image";
+import { ChangeEvent, ChangeEventHandler, useState } from "react";
 
 type AuthPageProps = {
   isSignin: boolean;
 };
 
-const AuthPage = ({ isSignin }: AuthPageProps) => {
-  const submitHandler = () => {
+type InputFormType = {
+  username?: string;
+  name?: string;
+  password?: string;
+};
 
-  }
+const AuthPage = ({ isSignin }: AuthPageProps) => {
+  const [inputValue, setInputValue] = useState<InputFormType>({
+    username: "",
+    name: "",
+    password: "",
+  });
+
+  const changeHandler: ChangeEventHandler = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = event.target;
+    setInputValue((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const submitHandler = () => {
+    console.log(inputValue);
+  };
   return (
     <section className="fixed -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
       <div className="container">
@@ -33,6 +56,9 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
                 <input
                   type="text"
                   placeholder="name"
+                  value={inputValue.name}
+                  onChange={changeHandler}
+                  name="name"
                   className="bg-neutral-700  py-2 placeholder:text-neutral-400 focus:outline-none text-neutral-300"
                 />
               </div>
@@ -42,6 +68,9 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
               <input
                 type="text"
                 placeholder="username"
+                value={inputValue.username}
+                onChange={changeHandler}
+                name="username"
                 className="bg-neutral-700 py-2 placeholder:text-neutral-400 focus:outline-none text-neutral-300"
               />
             </div>
@@ -50,12 +79,18 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
               <input
                 type="password"
                 placeholder="password"
+                value={inputValue.password}
+                onChange={changeHandler}
+                name="password"
                 className="bg-neutral-700 py-2 placeholder:text-neutral-400 focus:outline-none text-neutral-300"
               />
             </div>
           </div>
           <div className="mt-8 mb-4 flex flex-col gap-2">
-            <button className="bg-neutral-300 hover:bg-rose-600 transition rounded-full py-1 tracking-wide font-medium w-full" onClick={submitHandler}>
+            <button
+              className="bg-neutral-300 hover:bg-rose-600 transition rounded-full py-1 tracking-wide font-medium w-full"
+              onClick={submitHandler}
+            >
               {isSignin ? "Sign in" : "Sign up"}
             </button>
             <button className="border border-neutral-500 hover:border-neutral-300 transition text-neutral-300 rounded-full py-1 w-full ">
