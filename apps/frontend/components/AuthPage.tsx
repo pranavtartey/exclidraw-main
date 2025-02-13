@@ -8,6 +8,7 @@ import { CreateUserSchema, SigninSchema } from "@repo/common/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { HTTP_BACKEND } from "@/config";
+import Link from "next/link";
 
 type AuthPageProps = {
   isSignin: boolean;
@@ -164,6 +165,23 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
           </div>
         </div>
       </div>
+      {isSignin ? (
+        <p className="text-center text-neutral-300">
+          Not a user?
+          <Link href="/signup" className="text-rose-600">
+            {" "}
+            Signup
+          </Link>
+        </p>
+      ) : (
+        <p className="text-center text-neutral-300">
+          Already a user?
+          <Link href="/signin" className="text-rose-600">
+            {" "}
+            Signin
+          </Link>
+        </p>
+      )}
     </section>
   );
 };
