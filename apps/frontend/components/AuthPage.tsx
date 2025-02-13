@@ -5,6 +5,9 @@ import { IconUserEdit, IconPassword, IconSignature } from "@tabler/icons-react";
 import Image from "next/image";
 import { ChangeEvent, ChangeEventHandler, useState } from "react";
 import { CreateUserSchema, SigninSchema } from "@repo/common/types";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { HTTP_BACKEND } from "@/config";
 
 type AuthPageProps = {
   isSignin: boolean;
@@ -17,6 +20,7 @@ type InputFormType = {
 };
 
 const AuthPage = ({ isSignin }: AuthPageProps) => {
+  const router = useRouter();
   const [inputValue, setInputValue] = useState<InputFormType>({
     username: "",
     name: "",
@@ -33,12 +37,30 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
     }));
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     if (isSignin) {
       const { username, password } = inputValue;
       const signinParsedData = SigninSchema.safeParse({ username, password });
 
+      if (!signinParsedData.success) {
+        return;
+      }
       console.log("This is the signin data", signinParsedData);
+      try {
+        const response = await axios.post(`${HTTP_BACKEND}/signin`, {
+          username,
+          password,
+        });
+
+        if (response.data.token) {
+          localStorage.setItem("authorization", response.data.token);
+          router.push("/");
+        }
+
+        console.log("This is the response form signinParsedData : ", response);
+      } catch (e) {
+        console.log("Something went wrong in the submitHandler Signin : ", e);
+      }
     } else {
       const { name, username, password } = inputValue;
       const signupParsedData = CreateUserSchema.safeParse({
@@ -47,7 +69,28 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
         password,
       });
 
-      console.log("This is the signup parsed data : ", signupParsedData);
+      if (!signupParsedData.success) {
+        return;
+      }
+
+      try {
+        const response = await axios.post(`${HTTP_BACKEND}/signup`, {
+          name,
+          username,
+          password,
+        });
+
+        console.log(
+          "This is the response form the signupParsedData : ",
+          response
+        );
+
+        router.push("/signin");
+
+        console.log("This is the signup parsed data : ", signupParsedData);
+      } catch (e) {
+        console.log("something went wrong in the submitHandler Signup : ", e);
+      }
     }
   };
   return (
@@ -108,14 +151,14 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
             >
               {isSignin ? "Sign in" : "Sign up"}
             </button>
-            <button className="border border-neutral-500 hover:border-neutral-300 transition text-neutral-300 rounded-full py-1 w-full ">
+            <button className="border border-neutral-500 hover:border-neutral-300 transition text-neutral-300 rounded-full py-1 w-full font-medium">
               Cancel
             </button>
           </div>
           {/* <p className="text-center text-neutral-300">OR</p> */}
           <hr />
           <div className="">
-            <button className="hover:bg-neutral-300 rounded-full py-1 w-full mt-4 inline-flex justify-center items-center gap-4 px-4 text-neutral-300 bg-black border hover:text-black transition">
+            <button className="hover:bg-neutral-300 rounded-full py-1 w-full mt-4 inline-flex justify-center items-center gap-4 px-4 text-neutral-300 bg-black border hover:text-black transition font-medium">
               <Image src={google} alt="google-logo-image" className="w-6" />{" "}
               <span>Signin with Google</span>
             </button>
