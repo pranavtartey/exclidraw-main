@@ -4,6 +4,7 @@ import google from "@/assets/google-signin.png";
 import { IconUserEdit, IconPassword, IconSignature } from "@tabler/icons-react";
 import Image from "next/image";
 import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { CreateUserSchema, SigninSchema } from "@repo/common/types";
 
 type AuthPageProps = {
   isSignin: boolean;
@@ -33,7 +34,21 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
   };
 
   const submitHandler = () => {
-    console.log(inputValue);
+    if (isSignin) {
+      const { username, password } = inputValue;
+      const signinParsedData = SigninSchema.safeParse({ username, password });
+
+      console.log("This is the signin data", signinParsedData);
+    } else {
+      const { name, username, password } = inputValue;
+      const signupParsedData = CreateUserSchema.safeParse({
+        name,
+        username,
+        password,
+      });
+
+      console.log("This is the signup parsed data : ", signupParsedData);
+    }
   };
   return (
     <section className="fixed -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
