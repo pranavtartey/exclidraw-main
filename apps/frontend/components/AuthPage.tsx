@@ -5,7 +5,7 @@ type AuthPageProps = {
   isSignin: boolean;
 };
 
-const AuthPage: FC<AuthPageProps> = ({ isSignin }) => {
+const AuthPage = ({ isSignin }: AuthPageProps) => {
   return (
     <div className="w-screen h-screen flex items-center justify-center">
       <div className="p-2 m-2 bg-white rounded-lg">

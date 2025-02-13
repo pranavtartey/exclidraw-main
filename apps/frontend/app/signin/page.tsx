@@ -1,7 +1,6 @@
 import AuthPage from "@/components/AuthPage"
-import { FC } from "react"
 
-const Signin:FC = () => {
+const Signin = () => {
     return (
         <AuthPage isSignin={true}/>
     )
