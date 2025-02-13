@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const ProductShowcase = () => {
   return (
-    <section className="py-[72px]">
+    <section className="pt-[72px]">
       <div className="container">
         <div className="mb-12">
           <h2 className="section-heading py-4 mb-4">
