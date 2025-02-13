@@ -2,7 +2,7 @@ import LogoTicker from "@/components/Logoticker";
 
 const Services = () => {
   return (
-    <section className="py-[72px]">
+    <section className="py-[72px]" id="services">
       <div className="container">
         {/* <div>
           <h2 className="section-heading">Services</h2>

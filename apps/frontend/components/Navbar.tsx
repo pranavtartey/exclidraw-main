@@ -4,10 +4,11 @@ import { useState } from "react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [clicked, setClicked] = useState<boolean>(false);
-
+  const router = useRouter();
   return (
     <div className="border border-neutral-500 rounded-lg px-4 py-2 shadow-[0_1px_14px_#DDD] bg-black/30 backdrop-blur-md">
       <div className="flex items-center justify-between">
@@ -49,7 +50,9 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        <button className="max-sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition">
+        <button className="max-sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition" onClick={() => {
+                  router.push("/signup");
+                }}>
           Sign up
         </button>
       </div>
@@ -86,7 +89,12 @@ const Navbar = () => {
               </Link>
             ))}
             <div>
-              <button className="sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition mx-auto block">
+              <button
+                className="sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition mx-auto block"
+                onClick={() => {
+                  router.push("/signup");
+                }}
+              >
                 Sign up
               </button>
             </div>

@@ -5,7 +5,6 @@ import ProductShowcase from "@/sections/ProductShowcase";
 import Services from "@/sections/Services";
 import Socials from "@/sections/Socials";
 import USP from "@/sections/USP";
-import Link from "next/link";
 
 export default function Home() {
   return (

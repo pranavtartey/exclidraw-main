@@ -22,7 +22,7 @@ Website visitor
   `;
 
   return (
-    <section className="">
+    <section className="" id="contact">
       <div className="container py-[72px]">
         <div className="w-fit mx-auto">
           <div className="flex gap-2">
