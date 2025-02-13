@@ -10,7 +10,7 @@ type AuthPageProps = {
 
 const AuthPage = ({ isSignin }: AuthPageProps) => {
   const submitHandler = () => {
-    
+
   }
   return (
     <section className="fixed -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
@@ -33,7 +33,7 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
                 <input
                   type="text"
                   placeholder="name"
-                  className="bg-neutral-700 rounded-full py-2 placeholder:text-neutral-400 focus:outline-none text-neutral-300"
+                  className="bg-neutral-700  py-2 placeholder:text-neutral-400 focus:outline-none text-neutral-300"
                 />
               </div>
             )}
@@ -42,7 +42,7 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
               <input
                 type="text"
                 placeholder="username"
-                className="bg-neutral-700 rounded-full py-2 placeholder:text-neutral-400 focus:outline-none text-neutral-300"
+                className="bg-neutral-700 py-2 placeholder:text-neutral-400 focus:outline-none text-neutral-300"
               />
             </div>
             <div className="w-fit bg-neutral-700 px-4 rounded-full inline-flex items-center justify-center gap-4">
@@ -50,7 +50,7 @@ const AuthPage = ({ isSignin }: AuthPageProps) => {
               <input
                 type="password"
                 placeholder="password"
-                className="bg-neutral-700 rounded-full py-2 placeholder:text-neutral-400 focus:outline-none text-neutral-300"
+                className="bg-neutral-700 py-2 placeholder:text-neutral-400 focus:outline-none text-neutral-300"
               />
             </div>
           </div>
