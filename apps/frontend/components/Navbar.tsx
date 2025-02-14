@@ -10,10 +10,12 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import FloatingForm from "./FloatingForm";
 
 const Navbar = () => {
   const [clicked, setClicked] = useState<boolean>(false);
   const router = useRouter();
+  const [isChalkClicked, setIsChalkClicked] = useState(false);
 
   const [token, setToken] = useState(
     () => localStorage.getItem("authorization") || ""
@@ -26,7 +28,7 @@ const Navbar = () => {
     }
   }, [token]);
   return (
-    <div className="border border-neutral-500 rounded-lg px-4 py-2 shadow-[0_1px_14px_#DDD] bg-black/30 backdrop-blur-md">
+    <div className="border border-neutral-500 rounded-lg px-4 py-2 shadow-[0_1px_14px_#DDD] bg-black/30 backdrop-blur-md relative">
       <div className="flex items-center justify-between">
         <svg width="80" height="40" fill="none" viewBox="0 0 176 40">
           <path
@@ -77,7 +79,12 @@ const Navbar = () => {
           </button>
         ) : (
           <div className="max-sm:hidden">
-            <button className="">
+            <button
+              className=""
+              onClick={() => {
+                setIsChalkClicked(!isChalkClicked);
+              }}
+            >
               <IconChalkboard color="#d4d4d4" />
             </button>
             <button
@@ -126,16 +133,20 @@ const Navbar = () => {
             ))}
             {!token ? (
               <button
-              className="sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition mx-auto block"
-              onClick={() => {
-                router.push("/signup");
-              }}
-            >
-              Sign up
-            </button>
+                className="sm:hidden bg-neutral-300 py-2 px-4 rounded-lg text-sm font-medium tracking-wider hover:bg-white transition mx-auto block"
+                onClick={() => {
+                  router.push("/signup");
+                }}
+              >
+                Sign up
+              </button>
             ) : (
               <div className="w-fit mx-auto flex gap-4">
-                <button>
+                <button
+                  onClick={() => {
+                    setIsChalkClicked(!isChalkClicked);
+                  }}
+                >
                   <IconChalkboard color="#d4d4d4" />
                 </button>
                 <button
@@ -152,6 +163,14 @@ const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      {isChalkClicked && (
+        <div className="">
+          <FloatingForm
+            isChalkClicked={isChalkClicked}
+            setIsChalkClicked={setIsChalkClicked}
+          />
+        </div>
+      )}
     </div>
   );
 };

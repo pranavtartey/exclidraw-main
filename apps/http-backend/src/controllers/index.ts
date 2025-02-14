@@ -126,14 +126,22 @@ export const getAllMessages = async (req: Request, res: Response) => {
 }
 export const roomDetails = async (req: Request, res: Response) => {
     const slug = (req.params.slug);
+    try {
+        const room = await prismaClient.room.findFirst({
+            where: {
+                slug
+            },
+        })
 
-    const room = await prismaClient.room.findFirst({
-        where: {
-            slug
-        },
-    })
+        res.json({
+            room
+        })
+        return
 
-    res.json({
-        room
-    })
+    } catch (e) {
+        res.status(403).json({
+            message: "something went worng in the roomDetails controller in http_backend : ", e
+        })
+        return
+    }
 }

@@ -8,8 +8,12 @@ const RoomCanvas = ({ roomId }: { roomId: string }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   useEffect(() => {
+    console.log(
+      "Value of authorization: ",
+      localStorage.getItem("authorization")
+    );
     const ws = new WebSocket(
-      `${WS_BACKEND}?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5NDM0YTM5YS03NjcxLTQ0MTAtOTFkNy04ZTA3NjZjYTI0MDEiLCJpYXQiOjE3MzkwODIzMDN9.7k7J4mWMOoSIdCKFsUUiCBm6EMPpLVtrm1cbYz3ZCxk`
+      `${WS_BACKEND}?token=${localStorage.getItem("authorization")}`
     );
     ws.onopen = () => {
       setSocket(ws);
